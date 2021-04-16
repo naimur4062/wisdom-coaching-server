@@ -18,6 +18,7 @@ client.connect(err => {
     console.log('err', err)
     const coursesCollection = client.db("wisdomCoaching").collection("courses");
     const bookingsCollection = client.db("wisdomCoaching").collection("bookings");
+    const reviewsCollection = client.db("wisdomCoaching").collection("reviews");
 
     app.post('/addCourse', (req, res) => {
         const newCourse = req.body;
@@ -41,8 +42,6 @@ client.connect(err => {
             })
     })
 
-
-
     app.post('/addBooking', (req, res) => {
         const booking = req.body;
         bookingsCollection.insertOne(booking)
@@ -51,12 +50,33 @@ client.connect(err => {
             })
     })
 
-    // app.get('/orders', (req, res) => {
-    //     ordersCollection.find({ email: req.query.email })
-    //         .toArray((err, items) => {
-    //             res.send(items)
-    //         })
-    // })
+    app.get('/bookings', (req, res) => {
+        bookingsCollection.find({})
+            .toArray((err, items) => {
+                res.send(items)
+            })
+    })
+    app.get('/userBookings', (req, res) => {
+        bookingsCollection.find({email: req.query.email})
+            .toArray((err, items) => {
+                res.send(items)
+            })
+    })
+
+    app.post('/addReview', (req, res) => {
+        const newReview = req.body;
+        reviewsCollection.insertOne(newReview)
+            .then(result => {
+                res.send(result.insertedCount > 0);
+            })
+    })
+
+    app.get('/reviews', (req, res) => {
+        reviewsCollection.find()
+            .toArray((err, items) => {
+                res.send(items)
+            })
+    });
 
     // app.delete('/delete/:id', (req, res) => {
     //     carsCollection.deleteOne({ _id: ObjectId(req.params.id) })
