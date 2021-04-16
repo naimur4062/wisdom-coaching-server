@@ -31,7 +31,7 @@ client.connect(err => {
             .toArray((err, items) => {
                 res.send(items)
             })
-    })
+    });
 
     // app.get('/car/:id', (req, res) => {
     //     carsCollection.find({ _id: ObjectId(req.params.id) })
