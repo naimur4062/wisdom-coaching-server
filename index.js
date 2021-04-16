@@ -17,6 +17,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 client.connect(err => {
     console.log('err', err)
     const coursesCollection = client.db("wisdomCoaching").collection("courses");
+    const bookingsCollection = client.db("wisdomCoaching").collection("bookings");
 
     app.post('/addCourse', (req, res) => {
         const newCourse = req.body;
@@ -33,22 +34,22 @@ client.connect(err => {
             })
     });
 
-    // app.get('/car/:id', (req, res) => {
-    //     carsCollection.find({ _id: ObjectId(req.params.id) })
-    //         .toArray((err, documents) => {
-    //             res.send(documents);
-    //         })
-    // })
+    app.get('/course/:id', (req, res) => {
+        coursesCollection.find({ _id: ObjectId(req.params.id) })
+            .toArray((err, documents) => {
+                res.send(documents);
+            })
+    })
 
 
 
-    // app.post('/addOrder', (req, res) => {
-    //     const order = req.body;
-    //     ordersCollection.insertOne(order)
-    //         .then(result => {
-    //             res.send(result.insertedCount > 0);
-    //         })
-    // })
+    app.post('/addBooking', (req, res) => {
+        const booking = req.body;
+        bookingsCollection.insertOne(booking)
+            .then(result => {
+                res.send(result.insertedCount > 0);
+            })
+    })
 
     // app.get('/orders', (req, res) => {
     //     ordersCollection.find({ email: req.query.email })
