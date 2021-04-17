@@ -19,6 +19,7 @@ client.connect(err => {
     const coursesCollection = client.db("wisdomCoaching").collection("courses");
     const bookingsCollection = client.db("wisdomCoaching").collection("bookings");
     const reviewsCollection = client.db("wisdomCoaching").collection("reviews");
+    const adminsCollection = client.db("wisdomCoaching").collection("admins");
 
     app.post('/addCourse', (req, res) => {
         const newCourse = req.body;
@@ -77,6 +78,22 @@ client.connect(err => {
                 res.send(items)
             })
     });
+
+    app.post('/addAdmin', (req, res) => {
+        const newAdmin = req.body;
+        adminsCollection.insertOne(newAdmin)
+            .then(result => {
+                res.send(result.insertedCount > 0);
+            })
+    })
+
+    app.post('/isAdmin', (req, res) => {
+        const email = req.body.email;
+        adminsCollection.find({ email: email })
+            .toArray((err, admins) => {
+                res.send(admins.length > 0)
+            })
+    })
 
     // app.delete('/delete/:id', (req, res) => {
     //     carsCollection.deleteOne({ _id: ObjectId(req.params.id) })
