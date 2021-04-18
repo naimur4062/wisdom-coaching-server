@@ -58,7 +58,7 @@ client.connect(err => {
             })
     })
     app.get('/userBookings', (req, res) => {
-        bookingsCollection.find({email: req.query.email})
+        bookingsCollection.find({ email: req.query.email })
             .toArray((err, items) => {
                 res.send(items)
             })
@@ -95,12 +95,19 @@ client.connect(err => {
             })
     })
 
-    // app.delete('/delete/:id', (req, res) => {
-    //     carsCollection.deleteOne({ _id: ObjectId(req.params.id) })
-    //         .then(result => {
-    //             console.log(result)
-    //         })
-    // })
+    app.delete('/delete/:id', (req, res) => {
+        coursesCollection.deleteOne({ _id: ObjectId(req.params.id) })
+            .then(result => {
+                console.log(result)
+            })
+    })
+
+    app.patch('/update/:id', (req, res) => {
+        bookingsCollection.updateOne({ _id: ObjectId(req.params.id)},
+        {
+            $set: {status: req.body.status}
+        })
+    })
 
 });
 
